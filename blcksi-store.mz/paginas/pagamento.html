@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<script>(function(){try{var t=localStorage.getItem("blcksiTema");document.documentElement.setAttribute("data-theme", t==="neon"?"neon":"dark");}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pagamento — BLCKSI</title>
+<link rel="stylesheet" href="../styles/css/main.css?v=1783982971">
+<link rel="stylesheet" href="../styles/css/local-icons.css?v=1">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="logo">BLCKSI</a>
+    <nav class="nav-links">
+      <a href="sobre.html">sobre</a>
+      <a href="servico.html">serviços</a>
+      <a href="contacto.html">contacto</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="alternar tema">
+      <svg class="ti ti-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5z"/></svg>
+    </button>
+    <button class="menu-toggle" aria-label="abrir menu">
+      <svg class="ti ti-menu-2" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="wrap" style="max-width:520px;">
+
+  <div class="breadcrumb">
+    <a href="index.html">início</a> / pagamento
+  </div>
+
+  <div id="paymentForm">
+
+    <div class="order-summary" id="orderSummary"></div>
+
+    <div style="margin-top:24px;">
+      <div class="section-label">ESCOLHA O MÉTODO</div>
+      <div class="payment-methods" id="paymentMethods">
+        <div class="payment-method active" data-method="M-Pesa">
+          <span>M-Pesa</span>
+          <svg class="ti ti-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12l4 4L19 6"/></svg>
+        </div>
+        <div class="payment-method" data-method="e-Mola">
+          <span>e-Mola</span>
+        </div>
+        <div class="payment-method" data-method="Transferência bancária">
+          <span>Transferência bancária</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="instructions">
+      1. Envie <b id="instructionsValor">o valor do produto</b> para o número <b>84 922 0801/87 755 9214</b><br>
+      2. Guarde o comprovativo (print ou foto)<br>
+      3. Preencha os dados abaixo e clique em enviar — vamos abrir o WhatsApp com o seu pedido já escrito, e é <b>lá que deve anexar a foto do comprovativo</b> antes de enviar a mensagem<br><br>
+      <b>Prazo de entrega:</b> a contagem dos 7 dias começa no dia em que o pagamento é efetuado. A encomenda é entregue num espaço de até 7 dias a partir dessa data.
+    </div>
+
+    <form id="confirmForm">
+      <div class="field">
+        <label for="nome">NOME COMPLETO</label>
+        <input type="text" id="nome" placeholder="o seu nome" required>
+      </div>
+      <div class="field">
+        <label for="contacto">NÚMERO DE CONTACTO</label>
+        <input type="tel" id="contacto" placeholder="84 xxx xxxx" required>
+      </div>
+
+      <button type="submit" class="btn" style="width:100%; margin-top:8px;">Continuar no WhatsApp</button>
+      <div class="confirm-note">vamos abrir o WhatsApp para anexar o comprovativo e confirmar o pedido</div>
+    </form>
+  </div>
+
+  <div class="form-success" id="formSuccess">
+    <svg class="ti ti-circle-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+    <h3>A abrir o WhatsApp...</h3>
+    <p>Anexe a foto do comprovativo na conversa e envie a mensagem para confirmarmos o seu pedido.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <span class="footer-copy">BLCKSI © 2026</span>
+  </div>
+</footer>
+
+<script src="../styles/js/produtos-data.js?v=1783988684"></script>
+<script src="../styles/js/pagamento.js?v=1783988684"></script>
+<script src="../styles/js/main.js?v=1783988684"></script>
+</body>
+</html>

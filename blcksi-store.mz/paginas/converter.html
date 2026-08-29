@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<script>(function(){try{var t=localStorage.getItem("blcksiTema");document.documentElement.setAttribute("data-theme", t==="neon"?"neon":"dark");}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversor WebP — BLCKSI (uso interno)</title>
+<link rel="stylesheet" href="../styles/css/main.css?v=1783988684">
+<style>
+  .conv-wrap { max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; }
+  .conv-drop {
+    border: 1.5px dashed var(--border-strong);
+    border-radius: var(--radius);
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .conv-drop:hover, .conv-drop.dragover { border-color: var(--text); color: var(--text); }
+  .conv-drop i { font-size: 30px; display: block; margin-bottom: 8px; }
+  .conv-controls { display: flex; align-items: center; gap: 14px; margin: 24px 0; }
+  .conv-controls label { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+  .conv-controls input[type="range"] { flex: 1; }
+  .conv-controls span { font-size: 13px; font-weight: 600; width: 34px; text-align: right; }
+  .conv-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--bg-card); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 12px; margin-bottom: 10px;
+  }
+  .conv-item img { width: 56px; height: 56px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+  .conv-item .meta { flex: 1; min-width: 0; }
+  .conv-item .meta .name { font-size: 13px; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .conv-item .meta .sizes { font-size: 12px; color: var(--text-muted); }
+  .conv-item .sizes .after { color: var(--accent, var(--text)); font-weight: 600; }
+  .conv-item a.btn { font-size: 12px; padding: 8px 16px; }
+  .conv-empty { color: var(--text-dim); font-size: 13px; text-align: center; padding: 20px 0; }
+</style>
+<link rel="stylesheet" href="../styles/css/local-icons.css?v=1">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="logo">BLCKSI</a>
+    <nav class="nav-links">
+      <a href="sobre.html">sobre</a>
+      <a href="servico.html">serviços</a>
+      <a href="contacto.html">contacto</a>
+    </nav>
+    <button class="menu-toggle" aria-label="abrir menu">
+      <svg class="ti ti-menu-2" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="conv-wrap">
+  <div class="eyebrow" style="color:var(--text-muted); font-size:12px; letter-spacing:.05em; margin-bottom:6px;">FERRAMENTA INTERNA</div>
+  <h1 style="margin-bottom:8px;">Conversor de fotos para WebP</h1>
+  <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px;">
+    Esta página não está ligada no menu do site — é só para tu converteres fotos de produtos antes de as adicionares ao catálogo. Tudo acontece no teu navegador; nada é enviado para lado nenhum.
+  </p>
+
+  <div class="conv-controls">
+    <label for="qualidade">Qualidade</label>
+    <input type="range" id="qualidade" min="50" max="95" value="82">
+    <span id="qualidadeValor">82</span>
+  </div>
+
+  <div class="conv-drop" id="dropZone">
+    <svg class="ti ti-photo-plus" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="M3 16l5-5 4 4 2-2 4 3M17 6v6M14 9h6"/></svg>
+    <div>Arrasta as fotos para aqui, ou clica para escolher</div>
+    <div style="font-size:12px; margin-top:4px;">aceita várias fotos de uma vez, jpg/png</div>
+    <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
+  </div>
+
+  <div id="lista" style="margin-top:24px;">
+    <div class="conv-empty" id="listaVazia">as fotos convertidas aparecem aqui</div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span class="footer-copy">BLCKSI © 2026</span>
+    <div class="footer-links">
+      <a href="index.html">início</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var dropZone = document.getElementById("dropZone");
+  var fileInput = document.getElementById("fileInput");
+  var lista = document.getElementById("lista");
+  var listaVazia = document.getElementById("listaVazia");
+  var qualidadeInput = document.getElementById("qualidade");
+  var qualidadeValor = document.getElementById("qualidadeValor");
+
+  qualidadeInput.addEventListener("input", function () {
+    qualidadeValor.textContent = qualidadeInput.value;
+  });
+
+  dropZone.addEventListener("click", function () { fileInput.click(); });
+
+  ["dragenter", "dragover"].forEach(function (evt) {
+    dropZone.addEventListener(evt, function (e) {
+      e.preventDefault();
+      dropZone.classList.add("dragover");
+    });
+  });
+  ["dragleave", "drop"].forEach(function (evt) {
+    dropZone.addEventListener(evt, function (e) {
+      e.preventDefault();
+      dropZone.classList.remove("dragover");
+    });
+  });
+  dropZone.addEventListener("drop", function (e) {
+    processarFicheiros(e.dataTransfer.files);
+  });
+  fileInput.addEventListener("change", function () {
+    processarFicheiros(fileInput.files);
+    fileInput.value = "";
+  });
+
+  function formatarTamanho(bytes) {
+    if (bytes < 1024) { return bytes + " B"; }
+    if (bytes < 1024 * 1024) { return Math.round(bytes / 1024) + " KB"; }
+    return (bytes / 1024 / 1024).toFixed(1) + " MB";
+  }
+
+  function processarFicheiros(files) {
+    Array.prototype.forEach.call(files, function (file) {
+      if (!/^image\//.test(file.type)) { return; }
+      converter(file);
+    });
+  }
+
+  function converter(file) {
+    if (listaVazia) { listaVazia.style.display = "none"; }
+
+    var img = new Image();
+    var urlOriginal = URL.createObjectURL(file);
+
+    img.onload = function () {
+      var canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      var qualidade = parseInt(qualidadeInput.value, 10) / 100;
+
+      canvas.toBlob(function (blob) {
+        if (!blob) {
+          alert("Não foi possível converter " + file.name + " (o navegador pode não suportar WebP).");
+          return;
+        }
+
+        var nomeSaida = file.name.replace(/\.[^.]+$/, "") + ".webp";
+        var urlSaida = URL.createObjectURL(blob);
+
+        var item = document.createElement("div");
+        item.className = "conv-item";
+        item.innerHTML =
+          '<img src="' + urlOriginal + '" alt="">' +
+          '<div class="meta">' +
+            '<div class="name">' + nomeSaida + '</div>' +
+            '<div class="sizes">' + formatarTamanho(file.size) + ' → <span class="after">' + formatarTamanho(blob.size) + '</span>' +
+              ' (-' + Math.round(100 - (blob.size / file.size) * 100) + '%)' +
+            '</div>' +
+          '</div>' +
+          '<a class="btn" href="' + urlSaida + '" download="' + nomeSaida + '">descarregar</a>';
+
+        lista.appendChild(item);
+      }, "image/webp", qualidade);
+    };
+
+    img.src = urlOriginal;
+  }
+})();
+</script>
+</body>
+</html>
