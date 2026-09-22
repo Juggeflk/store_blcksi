@@ -836,6 +836,23 @@ var PRODUTOS = [
     imagens: ["../styles/assets/img/camisa-124.webp"],
     descricao: "Camisa oversized com acabamento fosco, ideal para compor looks urbanos."
   },
+
+    {
+    id: "preto-01",
+    categoria: "preto",
+    nome: "Bastao eletrico",
+    preco: 4000,
+    imagens: ["../styles/assets/img/bast.webp", "../styles/assets/img/bas.webp", "", ""],
+    descricao: "Bastao para seguranca pessoal e profissional."
+  },
+  {
+    id: "preto-02",
+    categoria: "preto",
+    nome: "Taser eletrico",
+    preco: 2800,
+    imagens: ["../styles/assets/img/tase.webp", "../styles/assets/img/taxe.webp", "", ""],
+    descricao: "Bastao para seguranca pessoal e profissional."
+  }
 ];
 
 var CATEGORIA_LABEL = {

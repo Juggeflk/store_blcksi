@@ -92,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var pedido = window.PEDIDO_ATUAL;
       var nome = document.getElementById("nome");
       var contacto = document.getElementById("contacto");
+      var localizacao = document.getElementById("localizacao");
       var metodoEl = document.querySelector("#paymentMethods .payment-method.active");
       var metodo = metodoEl ? metodoEl.getAttribute("data-method") : "";
 
@@ -104,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "Método: " + metodo,
           "Nome: " + (nome ? nome.value : ""),
           "Contacto: " + (contacto ? contacto.value : ""),
+          "localizacao: " + (localizacao  ? localizacao.value : ""),
           "",
           "Nota: a partir do dia em que o pagamento for efetuado, começa a contar o prazo de entrega — a encomenda é entregue num espaço de até 7 dias."
         ].filter(Boolean);
@@ -134,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var dados = {
         nome: document.getElementById("cNome").value,
         contacto: document.getElementById("cContacto").value,
+        localizacao: document.getElementById("cLocalizacao").value,
         mensagem: document.getElementById("cMensagem").value,
         _gotcha: document.getElementById("cGotcha").value
       };
